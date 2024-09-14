@@ -6,7 +6,7 @@
 package models
 
 import (
-	"git.xiaojukeji.com/map-arch/tg-example/idl"
+	"github.com/didi/tg-example/idl"
 )
 
 func CreateErrorResponseInfo(errNo int32, errMsg string) *idl.ResponseInfo {

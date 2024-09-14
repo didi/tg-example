@@ -2,7 +2,7 @@ all: install
 
 install: clean gen_output build
 	mkdir -p output/bin
-	mv $(GOPATH)/src/git.xiaojukeji.com/map-arch/tg-example/tg-example output/bin/
+	mv $(GOPATH)/src/github.com/didi/tg-example/tg-example output/bin/
 
 gen_output:
 	mkdir -p output/log

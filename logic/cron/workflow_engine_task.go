@@ -3,8 +3,8 @@ package cron
 import (
 "context"
 "fmt"
-"git.xiaojukeji.com/map-arch/tg-example/global/constants"
-"git.xiaojukeji.com/map-arch/tg-example/logic/module"
+"github.com/didi/tg-example/global/constants"
+"github.com/didi/tg-example/logic/module"
 "github.com/didi/tg-flow/common/tlog"
 "github.com/didi/tg-flow/common/utils"
 "github.com/didi/tg-flow/wfengine"

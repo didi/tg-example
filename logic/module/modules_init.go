@@ -1,10 +1,10 @@
 package module
 
 import (
-	"git.xiaojukeji.com/map-arch/tg-example/logic/module/data"
-		"git.xiaojukeji.com/map-arch/tg-example/logic/module/mock"
-		"git.xiaojukeji.com/map-arch/tg-example/logic/module/rank"
-	"git.xiaojukeji.com/map-arch/tg-example/logic/module/recall"
+	"github.com/didi/tg-example/logic/module/data"
+		"github.com/didi/tg-example/logic/module/mock"
+		"github.com/didi/tg-example/logic/module/rank"
+	"github.com/didi/tg-example/logic/module/recall"
 	"github.com/didi/tg-flow/wfengine"
 )
 

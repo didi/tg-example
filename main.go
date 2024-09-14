@@ -3,10 +3,10 @@ package main
 import (
 "context"
 "fmt"
-"git.xiaojukeji.com/map-arch/tg-example/controller"
-"git.xiaojukeji.com/map-arch/tg-example/logic/cron"
-"github.com/didi/tg-flow/common/tlog"
 "github.com/cihub/seelog"
+"github.com/didi/tg-example/controller"
+"github.com/didi/tg-example/logic/cron"
+"github.com/didi/tg-flow/common/tlog"
 "github.com/gin-gonic/gin"
 "log"
 )

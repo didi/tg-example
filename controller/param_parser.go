@@ -1,10 +1,10 @@
 package controller
 
 import (
-		"git.xiaojukeji.com/map-arch/tg-example/global/constants"
-	"git.xiaojukeji.com/map-arch/tg-example/models"
+	"github.com/didi/tg-example/global/constants"
+	"github.com/didi/tg-example/models"
 	"github.com/gin-gonic/gin"
-		"strconv"
+	"strconv"
 	"strings"
 )
 

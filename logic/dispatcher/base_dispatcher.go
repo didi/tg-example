@@ -9,7 +9,7 @@ package dispatcher
 import (
 "context"
 "fmt"
-"git.xiaojukeji.com/map-arch/tg-example/logic/cron"
+"github.com/didi/tg-example/logic/cron"
 "github.com/didi/tg-flow/common/timeutils"
 "github.com/didi/tg-flow/common/tlog"
 "github.com/didi/tg-flow/common/utils"

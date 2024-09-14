@@ -10,7 +10,7 @@ import (
 
 "context"
 "fmt"
-"git.xiaojukeji.com/map-arch/tg-example/common/redis"
+"github.com/didi/tg-example/common/redis"
 "github.com/didi/tg-flow/common/tlog"
 "github.com/didi/tg-flow/wfengine"
 )

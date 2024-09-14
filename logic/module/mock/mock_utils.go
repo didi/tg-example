@@ -1,8 +1,8 @@
 package mock
 
 import (
-	"git.xiaojukeji.com/map-arch/tg-example/idl"
-	"git.xiaojukeji.com/map-arch/tg-example/models"
+	"github.com/didi/tg-example/idl"
+	"github.com/didi/tg-example/models"
 "math/rand"
 	"time"
 )

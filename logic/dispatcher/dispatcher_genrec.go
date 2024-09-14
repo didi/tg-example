@@ -8,9 +8,9 @@ package dispatcher
 import (
 	"context"
 	"encoding/json"
-	"git.xiaojukeji.com/map-arch/tg-example/global/constants"
-	"git.xiaojukeji.com/map-arch/tg-example/idl"
-	"git.xiaojukeji.com/map-arch/tg-example/models"
+	"github.com/didi/tg-example/global/constants"
+	"github.com/didi/tg-example/idl"
+	"github.com/didi/tg-example/models"
 	"github.com/didi/tg-flow/model"
 	"strconv"
 )
