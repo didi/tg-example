@@ -1,0 +1,11 @@
+vendor/
+.idea/
+output/
+*.swp
+test.sh
+.deploy/
+.statsd/
+log/
+logs/
+tg-example
+bin/

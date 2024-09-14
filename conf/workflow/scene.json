@@ -1,0 +1,19 @@
+{
+	"20000": {
+		"id": 20000,
+		"name": "tg-example",
+		"appid": 200,
+		"bucket_type": 1,
+		"slots": null,
+		"update_time": "2024-06-30T23:34:28+08:00",
+		"flow_type": 1,
+		"group_workflows": {
+			"control_group": 10217,
+			"treatment_group1": 10218,
+			"treatment_group2": 10219,
+			"treatment_group3": 10220
+		},
+		"default_workflow_id": 10219,
+		"dispatch_experiment_name": "0"
+	}
+}

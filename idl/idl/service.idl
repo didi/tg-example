@@ -1,0 +1,52 @@
+namespace go rpc
+
+struct RequestInfo {
+	1:	required	i64			cityId			(desc="城市id")
+	2:	required	string		category		(desc="版本")
+	3:	required	string		keyword		    (desc="关键字")
+	4:	required	i64			uid				(desc="用户id")
+    5:	required	i64			scene_id		(desc="场景id，内部用，请求方不用传")
+    6:  required    i64			flow_id			(desc="workflowid,测试用，正常请求不传")
+	7:  required	bool		is_debug    	(desc="是否debug请求,debug用，正常请求不传")
+}
+
+struct ResponseInfo {
+	1:	required	i32   			errno		(desc="错误编号")
+	2:	required	string			errmsg		(desc="错误消息")
+	3:	required	DataType		data		(desc="返回数据")
+}
+
+struct DataType	{
+	1:	required	list<ItemType>	items	 	(desc="推荐结果")
+	2:	required	string			version		(desc="版本号")
+}
+
+struct ItemType {
+	1:  required	string		    name				(desc="名称")
+	2: 	required	double		    price				(desc="价格")
+	3: 	required	double		    score				(desc="分值")
+	4: required	    i64		    	goods_id			(desc="商品id")
+}
+
+service RPCService {
+	ResponseInfo query(
+	 	1: RequestInfo requestInfo  (desc="search request info")
+	)(
+        path="/query"
+		httpMethod="GET"
+		contentType="json"
+		timeoutMsec="300"
+		desc="搜索接口"
+	)
+}(
+    version="1.0.0"
+    servName="disf!map-point-sys-tg-example"
+    servType="http"
+    prefix="/search"
+    connectTimeoutMsec="300"
+    retryCount="1"
+    /* 故障摘除, 服务健康度相关 */
+    minHealthyRatio="0.67"
+    healthyThreshold="5"
+    maxCooldownTime="60"    
+)
