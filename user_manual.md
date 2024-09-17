@@ -10,7 +10,9 @@ tg-flow运行时需要加载工作流配置文件，我们的后台管理系统t
 
 ### 2.1 tg-example下载
 1. 下载tg-example: git clone git@github.com/didi/tg-example.git
+
 2. 如下图为tg-example示例项目代码:
+
 ![代码目录层级](docs/tg-example_dir.png)
 
 各目录主要功能：
