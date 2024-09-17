@@ -10,14 +10,15 @@ import (
 	"context"
 	"fmt"
 	"github.com/didi/tg-example/common/utils"
-	"github.com/didi/tg-example/global/constants"
+	"github.com/didi/tg-example/constants"
 	"github.com/didi/tg-example/logic/module/mock"
 	"github.com/didi/tg-flow/common/tlog"
-utl "github.com/didi/tg-flow/common/utils"
+	utl "github.com/didi/tg-flow/common/utils"
 	"github.com/didi/tg-flow/model"
 	"github.com/didi/tg-flow/wfengine"
 	"time"
-)
+
+	)
 
 type EsAoi struct {
 	wfengine.ModelBase
@@ -25,30 +26,31 @@ type EsAoi struct {
 
 func (e EsAoi) DoAction(ctx context.Context, sc *model.StrategyContext) interface{} {
 	defer utl.Recover(ctx, constants.ErrTypeActionPanic)
+	fmt.Println(fmt.Sprintf("actionName:%v,\tstart time:%v", e.GetName(), time.Now()))
 
 	//1. 取数据
 	reqInfo, err := utils.CheckRequestContext(sc)
 	if reqInfo == nil || err != nil {
 		errMsg := fmt.Sprintf("%v", err)
 		tlog.Handler.ErrorCount(ctx, "utils_check_RequestInfo_err", errMsg)
-		sc.Skip(constants.ErrrNoOther, errMsg)
+		sc.Skip(constants.ErrNoOther, errMsg)
 
 		return err
 	}
 
 	//2. 取上游节点的处理结果
-	esGeneralItems, err := utils.CheckItemsInfo(sc, constants.CONTEXTKEY_ES_GENERAL_INFO)
+	esGeneralItems, err := utils.CheckItemsInfo(sc, constants.ContextkeyEsGeneralInfo)
 	if err != nil{
 		errMsg := fmt.Sprintf("%v", err)
 		tlog.Handler.ErrorCount(ctx, "utils.checkItemsInfo_err", errMsg)
 		//验证超时功能，找不到就忽略,无需退出
-		//sc.Skip(constants.ErrrNoOther, errMsg)
+		//sc.Skip(constants.ErrNoOther, errMsg)
 		//return err
 	}
 	//3. 召回
 	items := mock.MockEsAoiRecall(esGeneralItems, 35)
-	sc.Set(constants.CONTEXTKEY_ES_AOI_INFO, items)
+	sc.Set(constants.ContextkeyEsAoiInfo, items)
 
-	fmt.Println(fmt.Sprintf("完成时间=%v ,actionName=%v", time.Now(), e.GetName()))
+	fmt.Println(fmt.Sprintf("actionName:%v,\tfinish time:%v", e.GetName(), time.Now()))
 	return items
 }

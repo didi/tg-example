@@ -1,9 +1,8 @@
 package mock
 
 import (
-	"github.com/didi/tg-example/idl"
 	"github.com/didi/tg-example/models"
-"math/rand"
+	"math/rand"
 	"time"
 )
 
@@ -17,15 +16,15 @@ func MockUserProfileFromRedis(userId int64) map[string]string {
 	return userProfile
 }
 
-func MockPreciseRank(items []*idl.ItemType) []*idl.ItemType {
+func MockPreciseRank(items []*models.ItemType) []*models.ItemType {
 	return mockRank(items)
 }
 
-func MockReRank(items []*idl.ItemType) []*idl.ItemType {
+func MockReRank(items []*models.ItemType) []*models.ItemType {
 	return mockRank(items)
 }
 
-func mockRank(items []*idl.ItemType) []*idl.ItemType {
+func mockRank(items []*models.ItemType) []*models.ItemType {
 	source := rand.NewSource(time.Now().UnixNano())
     r := rand.New(source)
 
@@ -36,11 +35,11 @@ func mockRank(items []*idl.ItemType) []*idl.ItemType {
 	return items
 }
 
-func MockEsGeneralRecall(reqInfo *models.RequestContext, mockCostTime int) []*idl.ItemType{
+func MockEsGeneralRecall(reqInfo *models.RequestContext, mockCostTime int) []*models.ItemType{
 	return MockRecall(mockCostTime)
 }
 
-func MockEsAoiRecall(items []*idl.ItemType, mockCostTime int) []*idl.ItemType{
+func MockEsAoiRecall(items []*models.ItemType, mockCostTime int) []*models.ItemType{
 	if len(items)==0{
 		items = MockRecall(mockCostTime)
 	}
@@ -48,33 +47,33 @@ func MockEsAoiRecall(items []*idl.ItemType, mockCostTime int) []*idl.ItemType{
 	return items
 }
 
-func MockEsPreciseRecall(items []*idl.ItemType, mockCostTime int) []*idl.ItemType{
+func MockEsPreciseRecall(items []*models.ItemType, mockCostTime int) []*models.ItemType{
 	if len(items)==0{
 		items = MockRecall(mockCostTime)
 	}
 	return items
 }
 
-func MockHistRecall(mockCostTime int) []*idl.ItemType{
+func MockHistRecall(mockCostTime int) []*models.ItemType{
 	return MockRecall(mockCostTime)
 }
 
-func MockHotRecall(mockCostTime int) []*idl.ItemType{
+func MockHotRecall(mockCostTime int) []*models.ItemType{
 	return MockRecall(mockCostTime)
 }
 
-func MockQacRecall(mockCostTime int) []*idl.ItemType{
+func MockQacRecall(mockCostTime int) []*models.ItemType{
 	return MockRecall(mockCostTime)
 }
 
-func MockRecall(mockCostTime int) []*idl.ItemType{
+func MockRecall(mockCostTime int) []*models.ItemType{
 	time.Sleep(time.Millisecond * time.Duration(mockCostTime))
 	source := rand.NewSource(time.Now().UnixNano())
     r := rand.New(source)
 
-	items := make([]*idl.ItemType, 10, 10)
+	items := make([]*models.ItemType, 10, 10)
 	for i:=0;i<10;i++{
-		item :=&idl.ItemType{
+		item :=&models.ItemType{
 			GoodsId: int64(r.Intn(maxGoodsId)),
 			Price: r.Float64(),
 		}
@@ -84,8 +83,8 @@ func MockRecall(mockCostTime int) []*idl.ItemType{
 	return items
 }
 
-func MockRoughRank(items []*idl.ItemType, items2 []*idl.ItemType, items3 []*idl.ItemType, items4 []*idl.ItemType) []*idl.ItemType {
-	resultMap := make(map[int64]*idl.ItemType)
+func MockRoughRank(items []*models.ItemType, items2 []*models.ItemType, items3 []*models.ItemType, items4 []*models.ItemType) []*models.ItemType {
+	resultMap := make(map[int64]*models.ItemType)
 	for _, item:= range items{
 		if _, ok := resultMap[item.GoodsId]; !ok{
 			resultMap[item.GoodsId] = item
@@ -110,7 +109,7 @@ func MockRoughRank(items []*idl.ItemType, items2 []*idl.ItemType, items3 []*idl.
 		}
 	}
 
-	results := make([]*idl.ItemType,len(resultMap), len(resultMap))
+	results := make([]*models.ItemType,len(resultMap), len(resultMap))
 	i:=0
 	for _, v := range resultMap{
 		results[i] = v

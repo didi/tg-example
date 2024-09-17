@@ -9,8 +9,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/didi/tg-example/common/utils"
-	"github.com/didi/tg-example/global/constants"
-	"github.com/didi/tg-example/logic/module/mock"
+	"github.com/didi/tg-example/constants"
+"github.com/didi/tg-example/logic/module/mock"
 	"github.com/didi/tg-flow/common/tlog"
 utl "github.com/didi/tg-flow/common/utils"
 	"github.com/didi/tg-flow/model"
@@ -24,25 +24,26 @@ type RoughRank struct {
 
 func (r RoughRank) DoAction(ctx context.Context, sc *model.StrategyContext) interface{} {
 	defer utl.Recover(ctx, constants.ErrTypeActionPanic)
+	fmt.Println(fmt.Sprintf("actionName:%v,\tstart time:%v", r.GetName(), time.Now()))
 
 	reqInfo, err := utils.CheckRequestContext(sc)
 	if reqInfo == nil || err != nil {
 		errMsg := fmt.Sprintf("%v", err)
 		tlog.Handler.ErrorCount(ctx, "utils_check_RequestInfo_err", errMsg)
-		sc.Skip(constants.ErrrNoOther, errMsg)
+		sc.Skip(constants.ErrNoOther, errMsg)
 
 		return err
 	}
 
 	//TODO do somthing about precise rank here
-	esPreciseItems, err := utils.CheckItemsInfo(sc, constants.CONTEXTKEY_ES_PRECISE_INFO)
-	histRecallItems, err := utils.CheckItemsInfo(sc, constants.CONTEXTKEY_HIST_RECALL_INFO)
-	hotRecallItems, err := utils.CheckItemsInfo(sc, constants.CONTEXTKEY_HOT_RECALL_INFO)
-	qacRecallItems, err := utils.CheckItemsInfo(sc, constants.CONTEXTKEY_QAC_RECALL_INFO)
+	esPreciseItems, err := utils.CheckItemsInfo(sc, constants.ContextkeyEsPreciseInfo)
+	histRecallItems, err := utils.CheckItemsInfo(sc, constants.ContextkeyHistRecallInfo)
+	hotRecallItems, err := utils.CheckItemsInfo(sc, constants.ContextkeyHotRecallInfo)
+	qacRecallItems, err := utils.CheckItemsInfo(sc, constants.ContextkeyQacRecallInfo)
 	items := mock.MockRoughRank(esPreciseItems, histRecallItems, hotRecallItems, qacRecallItems)
-	sc.Set(constants.CONTEXTKEY_ROUGH_RANK_INFO, items)
+	sc.Set(constants.ContextkeyRoughRankInfo, items)
 
-	fmt.Println(fmt.Sprintf("完成时间=%v ,actionName=%v", time.Now(), r.GetName()))
+	fmt.Println(fmt.Sprintf("actionName:%v,\tfinish time:%v", r.GetName(), time.Now()))
 
 	return items
 }

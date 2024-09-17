@@ -7,7 +7,7 @@ GOPATH=/tmp/go-build${DATE}
 
 # 项目名称，根据具体项目改动
 MODULE_NAME=tg-example
-MODULE_PATH=${GOPATH}/src/git.xiaojukeji.com/map-arch
+MODULE_PATH=${GOPATH}/src/github.com/didi
 
 # env
 export GOPATH

@@ -10,8 +10,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/didi/tg-example/common/utils"
-	"github.com/didi/tg-example/global/constants"
-	"github.com/didi/tg-example/logic/module/mock"
+	"github.com/didi/tg-example/constants"
+"github.com/didi/tg-example/logic/module/mock"
 	"github.com/didi/tg-flow/common/tlog"
 utl "github.com/didi/tg-flow/common/utils"
 	"github.com/didi/tg-flow/model"
@@ -25,13 +25,14 @@ type EsGeneral struct {
 
 func (e EsGeneral) DoAction(ctx context.Context, sc *model.StrategyContext) interface{} {
 	defer utl.Recover(ctx, constants.ErrTypeActionPanic)
+	fmt.Println(fmt.Sprintf("actionName:%v,\tstart time:%v", e.GetName(), time.Now()))
 
 	//1. 取数据
 	reqInfo, err := utils.CheckRequestContext(sc)
 	if reqInfo == nil || err != nil {
 		errMsg := fmt.Sprintf("%v", err)
 		tlog.Handler.ErrorCount(ctx, "utils_check_RequestInfo_err", errMsg)
-		sc.Skip(constants.ErrrNoOther, errMsg)
+		sc.Skip(constants.ErrNoOther, errMsg)
 
 		return err
 	}
@@ -41,15 +42,15 @@ func (e EsGeneral) DoAction(ctx context.Context, sc *model.StrategyContext) inte
 	//if userInfo == nil || err != nil {
 	//	errMsg := fmt.Sprintf("%v", err)
 	//	logger.Handler.ErrorCount(ctx, "utils_checkItemsInfo_err", errMsg)
-	//	sc.Skip(constants.ErrrNoOther, errMsg)
+	//	sc.Skip(constants.ErrNoOther, errMsg)
 	//	return err
 	//}
 
 	//TODO do somthing about es general recall
 	items := mock.MockEsGeneralRecall(reqInfo, 40)
-	sc.Set(constants.CONTEXTKEY_ES_GENERAL_INFO, items)
+	sc.Set(constants.ContextkeyEsGeneralInfo, items)
 
-	fmt.Println(fmt.Sprintf("完成时间=%v ,actionName=%v", time.Now(), e.GetName()))
+	fmt.Println(fmt.Sprintf("actionName:%v,\tfinish time:%v", e.GetName(), time.Now()))
 	return items
 }
 

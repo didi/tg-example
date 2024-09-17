@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/didi/tg-example/global/constants"
+	"github.com/didi/tg-example/constants"
 	"github.com/didi/tg-example/models"
 	"github.com/gin-gonic/gin"
 	"strconv"

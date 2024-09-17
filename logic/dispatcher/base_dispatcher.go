@@ -1,15 +1,14 @@
 /*
 *
-Description	:	dispatcher of workflow engine
-Author:			dayunzhangyunfeng@didiglobal.com
-Date:			2021-07-20
+	Description:	dispatcher of workflow engine
+	Author:	dayunzhangyunfeng@didiglobal.com
+	Date:		2021-07-20
 */
 package dispatcher
 
 import (
 "context"
 "fmt"
-"github.com/didi/tg-example/logic/cron"
 "github.com/didi/tg-flow/common/timeutils"
 "github.com/didi/tg-flow/common/tlog"
 "github.com/didi/tg-flow/common/utils"
@@ -21,7 +20,7 @@ type Dispatcher interface {
 	BuildRequest(ctx context.Context, requestParam interface{}) *model.StrategyContext
 	BuildResponse(sc *model.StrategyContext) interface{}
 	WriteLog(ctx context.Context, sc *model.StrategyContext) map[string]interface{}
-	GetInterfaceName() string
+	GetName() string
 }
 
 func getInterfaceErrorTag(interfaceName string) string {
@@ -35,7 +34,7 @@ func getInterfaceErrorTag(interfaceName string) string {
 	tags:public日志类型标记
 */
 func DoStrategy(ctx context.Context, requestParam interface{}, d Dispatcher, tc *timeutils.TimeCoster) (interface{}, *model.StrategyContext) {
-	errTag := getInterfaceErrorTag(d.GetInterfaceName())
+	errTag := getInterfaceErrorTag(d.GetName())
 	defer utils.Recover(ctx, errTag)
 
 	//1、请求参数解析
@@ -44,7 +43,7 @@ func DoStrategy(ctx context.Context, requestParam interface{}, d Dispatcher, tc 
 	tc.StopSectionCount("BuildRequest")
 
 	//2. 执行业务逻辑
-	cron.WorkflowEngine.Run(ctx, sc)
+	WorkflowEngine.Run(ctx, sc)
 	errMap := sc.GetErrorMap()
 	errMap.Range(func(key, val interface{}) bool {
 		tlog.Handler.ErrorCount(ctx, "WorkflowEngine.Run_err", fmt.Sprintf("workflowengine run error, key=%v, val=%v", key, val))
@@ -67,7 +66,7 @@ func DoStrategy(ctx context.Context, requestParam interface{}, d Dispatcher, tc 
 
 // DoStrategyBatch 批量执行 Workflow 的接口，根据 requestParam 批量执行多次 Workflow，并将结果返回，返回结果的数量总是和请求的数量相同。
 func DoStrategyBatch(ctx context.Context, requestParams []interface{}, d Dispatcher) ([]interface{}, []*model.StrategyContext, []*timeutils.TimeCoster) {
-	errTag := getInterfaceErrorTag(d.GetInterfaceName())
+	errTag := getInterfaceErrorTag(d.GetName())
 	defer utils.Recover(ctx, errTag)
 
 	responseInfos := make([]interface{}, len(requestParams))
@@ -102,7 +101,7 @@ func DoStrategyBatch(ctx context.Context, requestParams []interface{}, d Dispatc
 			tc.StopSectionCount("BuildRequest")
 
 			//2. 执行业务逻辑
-			cron.WorkflowEngine.Run(ctx, sc)
+			WorkflowEngine.Run(ctx, sc)
 			errMap := sc.GetErrorMap()
 			errMap.Range(func(key, val interface{}) bool {
 				tlog.Handler.ErrorCount(ctx, "WorkflowEngine.BatchRun_err", fmt.Sprintf("workflowengine batch run error, key=%v, val=%v, reqNum=%v", key, val, curIdx))

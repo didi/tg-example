@@ -9,8 +9,7 @@ package controller
 
 import (
 "fmt"
-"github.com/didi/tg-example/global/constants"
-"github.com/didi/tg-example/idl"
+"github.com/didi/tg-example/constants"
 "github.com/didi/tg-example/logic/dispatcher"
 "github.com/didi/tg-example/models"
 "github.com/didi/tg-flow/common/timeutils"
@@ -22,23 +21,23 @@ import (
 
 type ExampleService struct {}
 
-var dispatcherObj = &dispatcher.DispatcherObj{InterfaceName: "search"}
+var RecDispatcher = &dispatcher.RecDispatcher{Name: "rec"}
 
-func (h *ExampleService) Query(c *gin.Context) {
-	respInfo, err := h.doQuery(c)
-	//fmt.Println("after h.doQuery respInfo, err===>", respInfo, err)
+func (h *ExampleService) Recommend(c *gin.Context) {
+	respInfo, err := h.doRecommend(c)
+	//fmt.Println("after h.doRecommend respInfo, err===>", respInfo, err)
 	if err != nil{
 		c.JSON(http.StatusNoContent, err)
 	}
 	c.JSON(http.StatusOK, respInfo)
 }
 
-func (h *ExampleService) doQuery(c *gin.Context) (*idl.ResponseInfo, error) {
+func (h *ExampleService) doRecommend(c *gin.Context) (*models.ResponseInfo, error) {
 	ctx := c.Request.Context()
 	if err := recover(); err != nil {
 		errMsg := fmt.Sprintf("%v", err)
 		tlog.Handler.ErrorCount(ctx, constants.DLTagSystemPanic, errMsg)
-		return models.CreateErrorResponseInfo(constants.ErrrNoOther, errMsg), nil
+		return models.CreateErrorResponseInfo(constants.ErrNoOther, errMsg), nil
 	}
 
 	tc := timeutils.NewTimeCosterUnit(timeutils.TimeUnitMillSecond)
@@ -51,23 +50,23 @@ func (h *ExampleService) doQuery(c *gin.Context) (*idl.ResponseInfo, error) {
 	if err != nil {
 		errMsg := fmt.Sprintf("%v", err)
 		tlog.Handler.ErrorCount(ctx, "getRequestContext_err", errMsg)
-		return models.CreateErrorResponseInfo(constants.ErrrNoOther, errMsg), nil
+		return models.CreateErrorResponseInfo(constants.ErrNoOther, errMsg), nil
 	}
 
 	//2.执行策略
-	resultInfo, _ := dispatcher.DoStrategy(ctx, rc, dispatcherObj, tc)
+	resultInfo, _ := dispatcher.DoStrategy(ctx, rc, RecDispatcher, tc)
 	if resultInfo == nil {
 		errMsg := "resultInfo is nil"
 		tlog.Handler.ErrorCount(ctx, "DoStrategy_err", errMsg)
-		return models.CreateErrorResponseInfo(constants.ErrrNoOther, errMsg), nil
+		return models.CreateErrorResponseInfo(constants.ErrNoOther, errMsg), nil
 	}
 
 	//3.解析结果
-	appResponse := resultInfo.(*idl.ResponseInfo)
+	appResponse := resultInfo.(*models.ResponseInfo)
 	if appResponse == nil {
-		errMsg := "resultInfo assert to *idl.ResponseInfo fail"
+		errMsg := "resultInfo assert to *models.ResponseInfo fail"
 		tlog.Handler.ErrorCount(ctx, "response_assert_err", fmt.Sprintf("errMsg:%v, resultInfo:%v", errMsg, resultInfo))
-		return models.CreateErrorResponseInfo(constants.ErrrNoOther, errMsg), nil
+		return models.CreateErrorResponseInfo(constants.ErrNoOther, errMsg), nil
 	}
 
 	tc.StopCount()

@@ -1,13 +1,13 @@
 package cron
 
-import "context"
+import (
 
-const (
-	//2分钟，定时任务周期
-	BASE_TASK_TIME = "0 0/2 * * * ?"
+"context"
+"github.com/didi/tg-example/logic/dispatcher"
 )
 
 func StartCronTask() {
-	go StartWorkflowEngine(context.TODO())
-	//如有其它定时任务，可在此添加
+	//定时任务，可在此添加
+	go dispatcher.StartWorkflowEngine(context.TODO())
+
 }

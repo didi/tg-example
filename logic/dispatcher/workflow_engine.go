@@ -1,9 +1,9 @@
-package cron
+package dispatcher
 
 import (
 "context"
 "fmt"
-"github.com/didi/tg-example/global/constants"
+"github.com/didi/tg-example/constants"
 "github.com/didi/tg-example/logic/module"
 "github.com/didi/tg-flow/common/tlog"
 "github.com/didi/tg-flow/common/utils"
@@ -15,14 +15,13 @@ var WorkflowEngine *wfengine.WorkflowEngine
 
 const (
 	workflowPath  = "conf/workflow"
-    DLTagCronTask = "crontab_task"
+	DLTagCronTask = "crontab_task"
 )
 
 func StartWorkflowEngine(ctx context.Context){
+	defer utils.Recover(ctx, "init_workflow_engine_err")
 	for{
-		defer utils.Recover(ctx, "init_workflow_engine_err")
 		InitWorkflowEngine(ctx)
-
 		time.Sleep(time.Duration(2* time.Minute))
 	}
 }

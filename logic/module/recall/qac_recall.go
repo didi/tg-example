@@ -10,10 +10,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/didi/tg-example/common/utils"
-	"github.com/didi/tg-example/global/constants"
+	"github.com/didi/tg-example/constants"
 	"github.com/didi/tg-example/logic/module/mock"
 	"github.com/didi/tg-flow/common/tlog"
-utl "github.com/didi/tg-flow/common/utils"
+	utl "github.com/didi/tg-flow/common/utils"
 	"github.com/didi/tg-flow/model"
 	"github.com/didi/tg-flow/wfengine"
 	"time"
@@ -25,21 +25,23 @@ type QacRecall struct {
 
 func (q QacRecall) DoAction(ctx context.Context, sc *model.StrategyContext) interface{} {
 	defer utl.Recover(ctx, constants.ErrTypeActionPanic)
+	fmt.Println(fmt.Sprintf("actionName:%v,\tstart time:%v", q.GetName(), time.Now()))
 
+	//1. 提取请求上下文信息
 	reqInfo, err := utils.CheckRequestContext(sc)
 	if reqInfo == nil || err != nil {
 		errMsg := fmt.Sprintf("%v", err)
 		tlog.Handler.ErrorCount(ctx, "utils_check_RequestInfo_err", errMsg)
-		sc.Skip(constants.ErrrNoOther, errMsg)
+		sc.Skip(constants.ErrNoOther, errMsg)
 
 		return err
 	}
 
-	//TODO do somthing about es general recall
-	items := mock.MockQacRecall(300)
-	sc.Set(constants.CONTEXTKEY_QAC_RECALL_INFO, items)
+	//2. 执行qac召回
+	items := mock.MockQacRecall(10)
+	sc.Set(constants.ContextkeyQacRecallInfo, items)
 
-	fmt.Println(fmt.Sprintf("完成时间=%v ,actionName=%v", time.Now(), q.GetName()))
+	fmt.Println(fmt.Sprintf("actionName:%v,\tfinish time:%v", q.GetName(), time.Now()))
 	return items
 }
 
